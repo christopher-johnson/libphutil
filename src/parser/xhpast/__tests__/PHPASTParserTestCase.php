@@ -3,8 +3,12 @@
 final class PHPASTParserTestCase extends PhutilTestCase {
 
   public function testParser() {
-    if (!xhpast_is_available()) {
-      $this->assertSkipped(pht('xhpast is not built or not up to date.'));
+    if (!PhutilXHPASTBinary::isAvailable()) {
+      try {
+        PhutilXHPASTBinary::build();
+      } catch (Exception $ex) {
+        $this->assertSkipped(pht('xhpast is not built or not up to date.'));
+      }
     }
 
     $dir = dirname(__FILE__).'/data/';
@@ -47,7 +51,7 @@ final class PHPASTParserTestCase extends PhutilTestCase {
           if ($type !== null) {
             throw new Exception(
               pht(
-                'Test file "%s" unexpectedly specifies multiple expected ',
+                'Test file "%s" unexpectedly specifies multiple expected '.
                 'test outcomes.',
                 $name));
           }
@@ -78,7 +82,7 @@ final class PHPASTParserTestCase extends PhutilTestCase {
           $name));
     }
 
-    $future = xhpast_get_parser_future($body);
+    $future = PhutilXHPASTBinary::getParserFuture($body);
     list($err, $stdout, $stderr) = $future->resolve();
 
     switch ($type) {

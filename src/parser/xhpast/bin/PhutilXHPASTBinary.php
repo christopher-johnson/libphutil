@@ -44,7 +44,7 @@ final class PhutilXHPASTBinary {
 
     // Test the binary.
     if (!self::isAvailable()) {
-      throw new Exception(pht('xhpast is broken.'));
+      throw new Exception(pht('%s is broken.', 'xhpast'));
     }
 
     self::$version = null;
@@ -57,13 +57,13 @@ final class PhutilXHPASTBinary {
    */
   public static function getBuildInstructions() {
     $root = phutil_get_library_root('phutil');
-    $make = Filesystem::resolvePath($root.'/../scripts/build_xhpast.sh');
+    $make = Filesystem::resolvePath($root.'/../scripts/build_xhpast.php');
 
     return phutil_console_format(
       "%s:\n\n  \$ %s\n",
       pht(
         "Your version of '%s' is unbuilt or out of date. Run this ".
-        "script to build it",
+        "script to build it.",
         'xhpast'),
       $make);
   }
